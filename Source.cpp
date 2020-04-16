@@ -38,8 +38,8 @@ int main()
 	std::cin >> input;
 	switch (input)
 	{
-	case 0: std::cin.clear(); Search(Mac, Term, &(VectorA)[0], &index);
-		for (int i = 0; i <= index; i++) 
+	case 0: std::cin.clear(); BoyerMooreSearch(Mac, Term, &(VectorA)[0], &index);
+		for (int i = 0; i <= index; i++)
 		{
 			X = X + 1;
 			std::cout << S << " found at \n" << VectorA[i] << "\n";
@@ -47,8 +47,8 @@ int main()
 		std::cout << S << X << " times \n";
 		break;
 
-	case 1: std::cin.clear(); FishmanSearch(Mac, Term, Prime, &(VectorA)[0], &index);
-		for (int i = 0; i <= index; i++) 
+	case 1: std::cin.clear(); RobinKarpSearch(Mac, Term, Prime, &(VectorA)[0], &index);
+		for (int i = 0; i <= index; i++)
 		{
 			X = X + 1;
 			std::cout << S << " found at \n" << VectorA[i] << "\n";
@@ -62,41 +62,41 @@ int main()
 }
 
 void RobinKarpSearch(std::string mainString, std::string Pattern, int Prime, int Array[], int* index)
-{ 
+{
 	int patLen = Pattern.size();
 	int strLen = mainString.size();
 	int charIndex, pattHash = 0, strHash = 0, h = 1;
 
-	for (int i = 0; i < patLen - 1; i++) 
+	for (int i = 0; i < patLen - 1; i++)
 	{
 		h = (h * MAXCHAR) % Prime;
 	}
 
-	for (int i = 0; i < patLen; i++) 
+	for (int i = 0; i < patLen; i++)
 	{
 		pattHash = (MAXCHAR * pattHash + Pattern[i]) % Prime;
 		strHash = (MAXCHAR * strHash + mainString[i]) % Prime;
 	}
 
-	for (int i = 0; i <= (strLen - patLen); i++) 
+	for (int i = 0; i <= (strLen - patLen); i++)
 	{
 		if (pattHash == strHash) {
-			for (charIndex = 0; charIndex < patLen; charIndex++) 
+			for (charIndex = 0; charIndex < patLen; charIndex++)
 			{
 				if (mainString[i + charIndex] != Pattern[charIndex])
 					break;
 			}
 
-			if (charIndex == patLen) 
+			if (charIndex == patLen)
 			{
 				(*index)++;
 				Array[(*index)] = i;
 			}
 		}
-		if (i < (strLen - patLen)) 
+		if (i < (strLen - patLen))
 		{
 			strHash = (MAXCHAR * (strHash - mainString[i] * h) + mainString[i + patLen]) % Prime;
-			if (strHash < 0) 
+			if (strHash < 0)
 			{
 				strHash += Prime;
 			}
@@ -111,7 +111,7 @@ void BoyerMooreSearch(std::string mainString, std::string Pattern, int Array[], 
 	int* Array2ay = new int[patLen + 1];
 	int* ShiftArray = new int[patLen + 1];
 
-	for (int i = 0; i <= patLen; i++) 
+	for (int i = 0; i <= patLen; i++)
 	{
 		ShiftArray[i] = 0;
 	}
@@ -120,20 +120,21 @@ void BoyerMooreSearch(std::string mainString, std::string Pattern, int Array[], 
 	NotTotalMatch(ShiftArray, Array2ay, Pattern);
 	int Shift = 0;
 
-	while (Shift <= (strLen - patLen)) 
+	while (Shift <= (strLen - patLen))
 	{
 		int j = patLen - 1;
-		while (j >= 0 && Pattern[j] == mainString[Shift + j]) 
+		while (j >= 0 && Pattern[j] == mainString[Shift + j])
 		{
 			j--;
 		}
 
-		if (j < 0) 
+		if (j < 0)
 		{
 			(*index)++;
 			Array[(*index)] = Shift;
 			Shift += ShiftArray[0];
-		}else 
+		}
+		else
 		{
 			Shift += ShiftArray[j + 1];
 		}
@@ -141,14 +142,14 @@ void BoyerMooreSearch(std::string mainString, std::string Pattern, int Array[], 
 }
 
 void Totalmatch(int Shift[], int Array2[], std::string Pattern)
-{                            
+{
 	int n = Pattern.size();
 	int i = n;
 	int j = n + 1;
 	Array2[i] = j;
 
 	while (i > 0) {
-		while (j <= n && Pattern[i - 1] != Pattern[j - 1]) 
+		while (j <= n && Pattern[i - 1] != Pattern[j - 1])
 		{
 			if (Shift[j] == 0)
 				Shift[j] = j - i;
@@ -161,17 +162,16 @@ void Totalmatch(int Shift[], int Array2[], std::string Pattern)
 }
 
 void NotTotalMatch(int Shift[], int Array2[], std::string Pattern)
-{                         
+{
 	int n = Pattern.size();
 	int j;
 	j = Array2[0];
 
-	for (int i = 0; i < n; i++) 
+	for (int i = 0; i < n; i++)
 	{
 		if (Shift[i] == 0)
-		Shift[i] = j;
+			Shift[i] = j;
 		if (i == j)
-		j = Array2[j];
+			j = Array2[j];
 	}
 }
-
