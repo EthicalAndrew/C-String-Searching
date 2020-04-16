@@ -11,7 +11,7 @@
 //REF2 https://www.tutorialspoint.com/Boyer-Moore-Algorithm
 
 void RobinKarpSearch(std::string mainString, std::string Pattern, int Prime, int Array[], int* index);
-void Search(std::string mainString, std::string Pattern, int Array[], int* index);
+void BoyerMooreSearch(std::string mainString, std::string Pattern, int Array[], int* index);
 void Totalmatch(int Shift[], int Array2[], std::string Pattern);
 void Totalmatch(int Shift[], int Array2[], std::string Pattern);
 void NotTotalMatch(int Shift[], int Array2[], std::string Pattern);
@@ -104,7 +104,7 @@ void RobinKarpSearch(std::string mainString, std::string Pattern, int Prime, int
 	}
 }
 
-void Search(std::string mainString, std::string Pattern, int Array[], int* index)
+void BoyerMooreSearch(std::string mainString, std::string Pattern, int Array[], int* index)
 {
 	int patLen = Pattern.size();
 	int strLen = mainString.size();
